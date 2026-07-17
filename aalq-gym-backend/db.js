@@ -14,11 +14,17 @@ let pool;
 
 async function initDB() {
   try {
-    // 1. Connect without database to check/create it
-    const tempConnection = await mysql.createConnection(dbConfig);
     const dbName = process.env.DB_NAME || 'apex_gym_db';
-    await tempConnection.query(`CREATE DATABASE IF NOT EXISTS \`${dbName}\``);
-    await tempConnection.end();
+
+    // Skip database creation check on Aiven/Production cloud DBs to prevent permission errors
+    if (process.env.DB_HOST && process.env.DB_HOST !== '127.0.0.1' && process.env.DB_HOST !== 'localhost') {
+      console.log('Cloud database environment detected, connecting directly to pool...');
+    } else {
+      // 1. Connect without database to check/create it (only for local development)
+      const tempConnection = await mysql.createConnection(dbConfig);
+      await tempConnection.query(`CREATE DATABASE IF NOT EXISTS \`${dbName}\``);
+      await tempConnection.end();
+    }
 
     // 2. Create the final connection pool with the database specified
     pool = mysql.createPool({
