@@ -1,0 +1,89 @@
+.category-hero {
+  height: 50vh;
+  min-height: 320px;
+  background-size: cover;
+  background-position: center;
+  display: flex;
+  align-items: flex-end;
+  padding-bottom: 3rem;
+  position: relative;
+}
+
+.category-hero-content {
+  max-width: 800px;
+  margin: 0 auto;
+  width: 100%;
+  padding: 0 1.5rem;
+  text-align: center;
+  z-index: 2;
+}
+
+.category-subtitle {
+  color: var(--accent);
+  font-weight: 700;
+  letter-spacing: 2px;
+  font-size: 0.85rem;
+  text-transform: uppercase;
+  display: block;
+}
+
+.category-title {
+  font-size: 3.2rem;
+  font-weight: 800;
+  margin: 0.5rem 0 1rem 0;
+  letter-spacing: -1px;
+  color: #fff;
+  line-height: 1.1;
+}
+
+.category-desc {
+  color: var(--text-secondary);
+  line-height: 1.6;
+  font-size: 1.05rem;
+  max-width: 650px;
+  margin: 0 auto;
+}
+
+/* Responsive Overrides for Classes */
+@media (max-width: 768px) {
+  .category-hero {
+    height: 40vh;
+    min-height: 280px;
+    padding-bottom: 2rem;
+  }
+
+  .category-title {
+    font-size: 2.3rem;
+  }
+
+  .category-desc {
+    font-size: 0.95rem;
+    line-height: 1.5;
+  }
+}
+
+@media (max-width: 480px) {
+  .category-hero {
+    height: 35vh;
+    min-height: 240px;
+    padding-bottom: 1.5rem;
+  }
+
+  .category-title {
+    font-size: 1.8rem;
+  }
+
+  .category-desc {
+    font-size: 0.88rem;
+  }
+
+  .classes-grid {
+    grid-template-columns: 1fr;
+    gap: 1rem;
+    padding: 0;
+  }
+
+  .class-card {
+    padding: 1.5rem !important;
+  }
+}
