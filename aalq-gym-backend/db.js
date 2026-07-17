@@ -7,7 +7,9 @@ const dbConfig = {
   user: process.env.DB_USER || 'root',
   password: process.env.DB_PASSWORD || '',
   port: process.env.DB_PORT || 3306,
-  ssl: process.env.DB_SSL === 'true' ? { rejectUnauthorized: false } : undefined,
+  ssl: (process.env.DB_HOST && process.env.DB_HOST !== '127.0.0.1' && process.env.DB_HOST !== 'localhost')
+    ? { rejectUnauthorized: false }
+    : undefined,
 };
 
 let pool;
