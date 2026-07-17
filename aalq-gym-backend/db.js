@@ -33,7 +33,7 @@ async function initDB() {
       ...dbConfig,
       database: dbName,
       waitForConnections: true,
-      connectionLimit: 10,
+      connectionLimit: process.env.VERCEL ? 2 : 10, // Prevent exhausting Aiven free tier limit (10)
       queueLimit: 0
     });
 
@@ -47,7 +47,10 @@ async function initDB() {
 
   } catch (error) {
     console.error('Error initializing MySQL database:', error);
-    process.exit(1);
+    // Do NOT call process.exit(1) on Vercel/production as it crashes the entire serverless instance
+    if (!process.env.VERCEL) {
+      process.exit(1);
+    }
   }
 }
 
