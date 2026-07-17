@@ -13,7 +13,17 @@ app.use(express.json());
 
 // Base health check route
 app.get('/health', (req, res) => {
-  res.json({ status: 'ok', service: 'Apex Physiques Gym API' });
+  res.json({
+    status: 'ok',
+    service: 'Apex Physiques Gym API',
+    diagnostics: {
+      dbHost: process.env.DB_HOST ? 'Defined' : 'Undefined',
+      dbUser: process.env.DB_USER ? 'Defined' : 'Undefined',
+      dbName: process.env.DB_NAME ? 'Defined' : 'Undefined',
+      dbPort: process.env.DB_PORT ? 'Defined' : 'Undefined',
+      dbSsl: process.env.DB_SSL ? 'Defined' : 'Undefined'
+    }
+  });
 });
 
 // Mount main routes under /api
