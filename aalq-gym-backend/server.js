@@ -30,9 +30,13 @@ async function startServer() {
   console.log('Initializing database connection...');
   await initDB();
   
-  app.listen(PORT, () => {
-    console.log(`Backend server successfully listening on port ${PORT}`);
-  });
+  if (process.env.NODE_ENV !== 'production' && !process.env.VERCEL) {
+    app.listen(PORT, () => {
+      console.log(`Backend server successfully listening on port ${PORT}`);
+    });
+  }
 }
 
 startServer();
+
+module.exports = app;
