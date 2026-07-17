@@ -18,16 +18,6 @@ async function initDB() {
   try {
     const dbName = process.env.DB_NAME || 'apex_gym_db';
 
-    // Skip database creation check on Aiven/Production cloud DBs to prevent permission errors
-    if (process.env.DB_HOST && process.env.DB_HOST !== '127.0.0.1' && process.env.DB_HOST !== 'localhost') {
-      console.log('Cloud database environment detected, connecting directly to pool...');
-    } else {
-      // 1. Connect without database to check/create it (only for local development)
-      const tempConnection = await mysql.createConnection(dbConfig);
-      await tempConnection.query(`CREATE DATABASE IF NOT EXISTS \`${dbName}\``);
-      await tempConnection.end();
-    }
-
     // 2. Create the final connection pool with the database specified
     pool = mysql.createPool({
       ...dbConfig,
@@ -37,20 +27,17 @@ async function initDB() {
       queueLimit: 0
     });
 
-    console.log(`Connected to MySQL database: ${dbName}`);
+    console.log(`Initialized database pool for: ${dbName}`);
 
-    // 3. Create Tables
-    await createTables();
-
-    // 4. Seed Data
-    await seedData();
+    // Run table creation and seeding asynchronously in the background so we do not block serverless startup
+    createTables()
+      .then(() => seedData())
+      .catch(error => {
+        console.error('Database background initialization failed:', error);
+      });
 
   } catch (error) {
     console.error('Error initializing MySQL database:', error);
-    // Do NOT call process.exit(1) on Vercel/production as it crashes the entire serverless instance
-    if (!process.env.VERCEL) {
-      process.exit(1);
-    }
   }
 }
 
