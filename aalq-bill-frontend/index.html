@@ -1,0 +1,836 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Smart Bill Manager - Streamline Your Payments</title>
+  <meta name="description" content="Manage, track, and pay your bills effortlessly with automated notifications, categories, and payment history.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+  <!-- External CSS -->
+  <link rel="stylesheet" href="css/styles.css">
+  <!-- FontAwesome Icons -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body>
+
+  <!-- ==========================================
+       SPLASH / LANDING VIEW
+       ========================================== -->
+  <section id="splash-view" class="view active">
+    <div class="splash-container">
+      <div class="logo-badge">
+        <i class="fa-solid fa-wallet"></i>
+      </div>
+      <h1 class="splash-title">Smart Bill <span class="gradient-text">Manager</span></h1>
+      <p class="splash-subtitle">Keep track of your expenses, get timely alerts, and never miss a payment deadline again.</p>
+      
+      <div class="splash-features">
+        <div class="feat-pill"><i class="fa-solid fa-bell text-warning"></i> Due Reminders</div>
+        <div class="feat-pill"><i class="fa-solid fa-chart-pie text-success"></i> Spend Analytics</div>
+        <div class="feat-pill"><i class="fa-solid fa-calendar-days text-primary"></i> Calendar View</div>
+      </div>
+
+      <button id="get-started-btn" class="btn btn-primary btn-large">
+        Get Started <i class="fa-solid fa-arrow-right"></i>
+      </button>
+    </div>
+  </section>
+
+  <!-- ==========================================
+       AUTHENTICATION VIEW
+       ========================================== -->
+  <section id="auth-view" class="view">
+    <div class="auth-card glass">
+      <!-- Login Tab -->
+      <div id="login-form-container">
+        <h2>Welcome Back</h2>
+        <p class="auth-lead">Sign in to manage your bills</p>
+        
+        <div id="auth-error" class="alert alert-danger hidden"></div>
+        <div id="auth-success" class="alert alert-success hidden"></div>
+
+        <form id="login-form">
+          <div class="form-group">
+            <label for="login-email">Email Address</label>
+            <div class="input-icon-wrapper">
+              <i class="fa-solid fa-envelope"></i>
+              <input type="email" id="login-email" placeholder="name@example.com" required autocomplete="username">
+            </div>
+          </div>
+
+          <div class="form-group">
+            <div class="label-row">
+              <label for="login-password">Password</label>
+              <a href="#" id="forgot-password-link" class="link-small">Forgot Password?</a>
+            </div>
+            <div class="input-icon-wrapper">
+              <i class="fa-solid fa-lock"></i>
+              <input type="password" id="login-password" placeholder="••••••••" required autocomplete="current-password">
+            </div>
+          </div>
+
+          <button type="submit" class="btn btn-primary btn-block">Sign In</button>
+        </form>
+
+        <p class="auth-footer">Don't have an account? <a href="#" id="go-to-signup">Sign Up</a></p>
+      </div>
+
+      <!-- Signup Tab -->
+      <div id="signup-form-container" class="hidden">
+        <h2>Create Account</h2>
+        <p class="auth-lead">Start tracking your bills today</p>
+        
+        <form id="signup-form">
+          <div class="form-group">
+            <label for="signup-name">Full Name</label>
+            <div class="input-icon-wrapper">
+              <i class="fa-solid fa-user"></i>
+              <input type="text" id="signup-name" placeholder="John Doe" required autocomplete="name">
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label for="signup-email">Email Address</label>
+            <div class="input-icon-wrapper">
+              <i class="fa-solid fa-envelope"></i>
+              <input type="email" id="signup-email" placeholder="name@example.com" required autocomplete="email">
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label for="signup-password">Password</label>
+            <div class="input-icon-wrapper">
+              <i class="fa-solid fa-lock"></i>
+              <input type="password" id="signup-password" placeholder="Min. 8 characters" required autocomplete="new-password">
+            </div>
+          </div>
+
+          <button type="submit" class="btn btn-primary btn-block">Sign Up</button>
+        </form>
+
+        <p class="auth-footer">Already have an account? <a href="#" id="go-to-login">Sign In</a></p>
+      </div>
+
+      <!-- Forgot Password / OTP Tab -->
+      <div id="forgot-form-container" class="hidden">
+        <h2>Forgot Password</h2>
+        <p class="auth-lead">Reset your credentials securely</p>
+        
+        <form id="forgot-form">
+          <div class="form-group">
+            <label for="forgot-email">Email Address</label>
+            <div class="input-icon-wrapper">
+              <i class="fa-solid fa-envelope"></i>
+              <input type="email" id="forgot-email" placeholder="name@example.com" required>
+            </div>
+          </div>
+          <button type="submit" class="btn btn-primary btn-block">Send Verification Code</button>
+        </form>
+
+        <!-- OTP Verification Form (Hidden Initially) -->
+        <form id="otp-form" class="hidden">
+          <div class="alert alert-info">A mock verification code <strong>123456</strong> has been simulated.</div>
+          
+          <div class="form-group">
+            <label for="otp-code">Verification Code</label>
+            <div class="input-icon-wrapper">
+              <i class="fa-solid fa-key"></i>
+              <input type="text" id="otp-code" placeholder="Enter 123456" required>
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label for="otp-new-password">New Password</label>
+            <div class="input-icon-wrapper">
+              <i class="fa-solid fa-lock"></i>
+              <input type="password" id="otp-new-password" placeholder="Enter new password" required>
+            </div>
+          </div>
+
+          <button type="submit" class="btn btn-primary btn-block">Verify & Update Password</button>
+        </form>
+
+        <p class="auth-footer"><a href="#" id="back-to-login"><i class="fa-solid fa-arrow-left"></i> Back to Log In</a></p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ==========================================
+       MAIN APP LAYOUT
+       ========================================== -->
+  <section id="app-view" class="view">
+    <div class="app-layout">
+      <!-- Sidebar -->
+      <aside class="sidebar">
+        <div class="sidebar-brand">
+          <i class="fa-solid fa-wallet"></i>
+          <span>BillManager</span>
+        </div>
+
+        <nav class="sidebar-menu">
+          <button class="nav-item active" data-panel="dashboard">
+            <i class="fa-solid fa-chart-simple"></i> Dashboard
+          </button>
+          <button class="nav-item" data-panel="bills">
+            <i class="fa-solid fa-file-invoice-dollar"></i> Bills
+          </button>
+          <button class="nav-item" data-panel="calendar">
+            <i class="fa-solid fa-calendar-days"></i> Calendar
+          </button>
+          <button class="nav-item" data-panel="history">
+            <i class="fa-solid fa-clock-rotate-left"></i> History
+          </button>
+          <button class="nav-item" data-panel="reports">
+            <i class="fa-solid fa-chart-pie"></i> Reports
+          </button>
+          <button class="nav-item" data-panel="recharge">
+            <i class="fa-solid fa-bolt"></i> Recharge & Pay
+          </button>
+          <button class="nav-item" data-panel="settings">
+            <i class="fa-solid fa-gears"></i> Settings
+          </button>
+        </nav>
+
+        <div class="sidebar-user">
+          <div class="user-avatar" id="avatar-initials">JD</div>
+          <div class="user-info">
+            <span class="user-name" id="app-user-name">John Doe</span>
+            <span class="user-email" id="app-user-email">john@example.com</span>
+          </div>
+          <button id="logout-btn" title="Logout"><i class="fa-solid fa-right-from-bracket"></i></button>
+        </div>
+      </aside>
+
+      <!-- Sidebar Overlay for Mobile -->
+      <div id="sidebar-overlay" class="sidebar-overlay"></div>
+
+      <!-- Main content -->
+      <main class="main-content">
+        <!-- Top bar -->
+        <header class="topbar">
+          <div class="topbar-left">
+            <button id="sidebar-toggle" class="sidebar-toggle" title="Toggle Menu">
+              <i class="fa-solid fa-bars"></i>
+            </button>
+            <h2 id="current-panel-title">Dashboard</h2>
+          </div>
+          
+          <div class="topbar-actions">
+            <!-- Notifications Bell -->
+            <div class="notification-bell-wrapper">
+              <button id="bell-btn" class="topbar-btn">
+                <i class="fa-solid fa-bell"></i>
+                <span class="badge hidden" id="notif-badge">0</span>
+              </button>
+              
+              <!-- Notifications Popover -->
+              <div id="notifications-popover" class="popover hidden">
+                <div class="popover-header">
+                  <h3>Notifications</h3>
+                  <button id="mark-all-read-btn" class="link-small">Mark all read</button>
+                </div>
+                <div id="notif-list" class="popover-list">
+                  <!-- Dynamic Notifications -->
+                </div>
+              </div>
+            </div>
+
+            <!-- New Bill Button Shortcut -->
+            <button id="shortcut-add-bill-btn" class="btn btn-primary">
+              <i class="fa-solid fa-plus"></i> Add Bill
+            </button>
+          </div>
+        </header>
+
+        <!-- Dynamic Panels -->
+        
+        <!-- Panel 1: Dashboard -->
+        <div id="dashboard-panel" class="app-panel active">
+          <!-- Stats Grid -->
+          <div class="stats-grid">
+            <div class="stat-card total">
+              <div class="stat-icon"><i class="fa-solid fa-receipt"></i></div>
+              <div class="stat-details">
+                <span class="stat-label">Total Bills</span>
+                <h3 id="stat-total-bills">0</h3>
+              </div>
+            </div>
+            <div class="stat-card due-today">
+              <div class="stat-icon"><i class="fa-solid fa-hourglass-half"></i></div>
+              <div class="stat-details">
+                <span class="stat-label">Due Today</span>
+                <h3 id="stat-due-today">0</h3>
+              </div>
+            </div>
+            <div class="stat-card upcoming">
+              <div class="stat-icon"><i class="fa-solid fa-calendar-week"></i></div>
+              <div class="stat-details">
+                <span class="stat-label">Upcoming</span>
+                <h3 id="stat-upcoming">0</h3>
+              </div>
+            </div>
+            <div class="stat-card overdue">
+              <div class="stat-icon"><i class="fa-solid fa-triangle-exclamation"></i></div>
+              <div class="stat-details">
+                <span class="stat-label">Overdue</span>
+                <h3 id="stat-overdue">0</h3>
+              </div>
+            </div>
+          </div>
+
+          <!-- Spent Summary & Recent Bills -->
+          <div class="dashboard-details">
+            <div class="panel-card spent-summary-card">
+              <h3>Monthly Summary</h3>
+              <div class="summary-comparison">
+                <div class="summary-metric spent">
+                  <span class="label">Paid This Month</span>
+                  <span class="value" id="summary-spent-amount">₹0</span>
+                </div>
+                <div class="summary-divider"></div>
+                <div class="summary-metric pending">
+                  <span class="label">Pending Total</span>
+                  <span class="value" id="summary-pending-amount">₹0</span>
+                </div>
+              </div>
+              <div class="progress-bar-wrapper">
+                <div class="progress-bar-fill" id="summary-progress-bar" style="width: 0%"></div>
+              </div>
+              <p class="progress-subtext" id="summary-progress-text">0% of total bills paid</p>
+            </div>
+
+            <div class="panel-card recent-bills-card">
+              <div class="card-header">
+                <h3>Urgent / Pending Bills</h3>
+                <button class="link-btn" id="view-all-bills-link">View All</button>
+              </div>
+              <div class="table-container">
+                <table class="data-table">
+                  <thead>
+                    <tr>
+                      <th>Bill Name</th>
+                      <th>Category</th>
+                      <th>Due Date</th>
+                      <th>Amount</th>
+                      <th>Status</th>
+                      <th>Actions</th>
+                    </tr>
+                  </thead>
+                  <tbody id="dashboard-bills-list">
+                    <!-- Dynamic Rows -->
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Panel 2: Bills Management -->
+        <div id="bills-panel" class="app-panel">
+          <div class="filter-bar">
+            <div class="search-box">
+              <i class="fa-solid fa-magnifying-glass"></i>
+              <input type="text" id="bills-search" placeholder="Search bills by name...">
+            </div>
+            <div class="filter-selects">
+              <select id="filter-category">
+                <option value="">All Categories</option>
+              </select>
+              <select id="filter-status">
+                <option value="">All Statuses</option>
+                <option value="Unpaid">Unpaid</option>
+                <option value="Paid">Paid</option>
+                <option value="Overdue">Overdue</option>
+              </select>
+              <select id="sort-by">
+                <option value="due_date-asc">Due Date (Soonest)</option>
+                <option value="due_date-desc">Due Date (Furthest)</option>
+                <option value="amount-desc">Amount (High to Low)</option>
+                <option value="amount-asc">Amount (Low to High)</option>
+              </select>
+            </div>
+          </div>
+
+          <div class="panel-card">
+            <div class="table-container">
+              <table class="data-table">
+                <thead>
+                  <tr>
+                    <th>Bill Name</th>
+                    <th>Category</th>
+                    <th>Recurrence</th>
+                    <th>Due Date</th>
+                    <th>Amount</th>
+                    <th>Status</th>
+                    <th>Actions</th>
+                  </tr>
+                </thead>
+                <tbody id="main-bills-list">
+                  <!-- Dynamic Rows -->
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+
+        <!-- Panel 3: Calendar View -->
+        <div id="calendar-panel" class="app-panel">
+          <div class="calendar-header">
+            <button id="prev-month-btn" class="btn btn-outline"><i class="fa-solid fa-chevron-left"></i></button>
+            <h3 id="calendar-month-year">July 2026</h3>
+            <button id="next-month-btn" class="btn btn-outline"><i class="fa-solid fa-chevron-right"></i></button>
+          </div>
+          
+          <div class="calendar-wrapper">
+            <div class="calendar-weekdays">
+              <div>Sun</div><div>Mon</div><div>Tue</div><div>Wed</div><div>Thu</div><div>Fri</div><div>Sat</div>
+            </div>
+            <div id="calendar-days" class="calendar-days-grid">
+              <!-- Dynamic Calendar Cells -->
+            </div>
+          </div>
+
+          <div class="calendar-legend">
+            <span class="legend-item"><span class="dot paid"></span> Paid</span>
+            <span class="legend-item"><span class="dot unpaid"></span> Unpaid</span>
+            <span class="legend-item"><span class="dot overdue"></span> Overdue</span>
+          </div>
+        </div>
+
+        <!-- Panel 4: Payment History -->
+        <div id="history-panel" class="app-panel">
+          <div class="filter-bar">
+            <div class="search-box">
+              <i class="fa-solid fa-magnifying-glass"></i>
+              <input type="text" id="history-search" placeholder="Search payments...">
+            </div>
+          </div>
+          <div class="panel-card">
+            <div class="table-container">
+              <table class="data-table">
+                <thead>
+                  <tr>
+                    <th>Bill Reference</th>
+                    <th>Paid Date</th>
+                    <th>Method</th>
+                    <th>Amount Paid</th>
+                    <th>Receipt</th>
+                  </tr>
+                </thead>
+                <tbody id="payments-history-list">
+                  <!-- Dynamic Rows -->
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+
+        <!-- Panel 5: Reports & Analytics -->
+        <div id="reports-panel" class="app-panel">
+          <div class="reports-grid">
+            <div class="panel-card chart-card">
+              <h3>Category-wise Distribution</h3>
+              <div class="chart-container">
+                <div id="category-report-list" class="report-breakdown-list">
+                  <!-- Dynamic Categories List with progress indicators -->
+                </div>
+              </div>
+            </div>
+
+            <div class="panel-card chart-card">
+              <h3>Paid vs Pending Ratio</h3>
+              <div class="ratio-container">
+                <div class="circle-ratio">
+                  <div class="circle-inner">
+                    <span id="ratio-percentage">0%</span>
+                    <span class="ratio-sub">Paid</span>
+                  </div>
+                </div>
+                <div class="ratio-legend">
+                  <div class="legend-metric spent">
+                    <span class="dot"></span>
+                    <span>Paid: <strong id="report-paid-total">₹0</strong></span>
+                  </div>
+                  <div class="legend-metric pending">
+                    <span class="dot"></span>
+                    <span>Pending: <strong id="report-pending-total">₹0</strong></span>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="panel-card monthly-bar-chart-card">
+            <h3>Monthly Expenses Summary</h3>
+            <div class="bar-chart-wrapper" id="monthly-bar-chart">
+              <!-- Dynamic Bars representing spent per month -->
+            </div>
+          </div>
+        </div>
+
+        <!-- Panel: Recharge & Utilities -->
+        <div id="recharge-panel" class="app-panel">
+          <div class="recharge-grid">
+            <!-- Selector Tabs -->
+            <div class="panel-card recharge-selector-card">
+              <h3>Services</h3>
+              <div class="recharge-tabs">
+                <button class="recharge-tab-btn active" id="btn-recharge-tab-mobile">
+                  <i class="fa-solid fa-mobile-screen-button"></i> Mobile Recharge
+                </button>
+                <button class="recharge-tab-btn" id="btn-recharge-tab-torrent">
+                  <i class="fa-solid fa-bolt"></i> Torrent Power
+                </button>
+              </div>
+            </div>
+
+            <!-- Service Forms -->
+            <div class="panel-card service-form-card">
+              <!-- Mobile Recharge Form -->
+              <div id="mobile-recharge-section" class="recharge-section active">
+                <h3>Mobile Recharge</h3>
+                <form id="mobile-recharge-form">
+                  <div class="form-group">
+                    <label for="recharge-mobile-number">Mobile Number *</label>
+                    <div class="input-icon-wrapper">
+                      <i class="fa-solid fa-phone"></i>
+                      <input type="tel" id="recharge-mobile-number" placeholder="Enter 10-digit mobile number" required pattern="[0-9]{10}">
+                    </div>
+                  </div>
+                  <div class="form-row">
+                    <div class="form-group">
+                      <label for="recharge-operator">Operator *</label>
+                      <select id="recharge-operator" required>
+                        <option value="">Select Operator</option>
+                        <option value="Jio">Jio</option>
+                        <option value="Airtel">Airtel</option>
+                        <option value="Vi">Vodafone Idea (Vi)</option>
+                        <option value="BSNL">BSNL</option>
+                      </select>
+                    </div>
+                    <div class="form-group">
+                      <label for="recharge-circle">Circle *</label>
+                      <select id="recharge-circle" required>
+                        <option value="Gujarat" selected>Gujarat</option>
+                        <option value="Maharashtra">Maharashtra</option>
+                        <option value="Mumbai">Mumbai</option>
+                        <option value="Delhi">Delhi NCR</option>
+                        <option value="Karnataka">Karnataka</option>
+                      </select>
+                    </div>
+                  </div>
+                  
+                  <!-- Plan selection -->
+                  <div class="plans-container hidden" id="recharge-plans-container">
+                    <div class="operator-detection-status" id="operator-detection-status">
+                      <i class="fa-solid fa-circle-check text-success"></i> Detected Operator: <strong id="detected-operator-label">Jio</strong> | Circle: <strong id="detected-circle-label">Gujarat</strong>
+                    </div>
+                    <div class="plans-category-tabs">
+                      <button type="button" class="plan-cat-btn active" data-cat="popular">Popular Plans</button>
+                      <button type="button" class="plan-cat-btn" data-cat="data">Data Add-on</button>
+                      <button type="button" class="plan-cat-btn" data-cat="talktime">Talktime</button>
+                    </div>
+                    <label>Select Recharge Plan *</label>
+                    <div class="plans-list" id="recharge-plans-list">
+                      <!-- Dynamic Plans Loaded from js -->
+                    </div>
+                  </div>
+                </form>
+              </div>
+
+              <!-- Torrent Power Form -->
+              <div id="torrent-recharge-section" class="recharge-section">
+                <h3>Torrent Power Electricity Bill</h3>
+                <form id="torrent-bill-form">
+                  <div class="form-group">
+                    <label for="torrent-service-number">Service / CA Number *</label>
+                    <div class="input-icon-wrapper">
+                      <i class="fa-solid fa-receipt"></i>
+                      <input type="text" id="torrent-service-number" placeholder="Enter 9-digit Service Number" required pattern="[0-9]{9}">
+                    </div>
+                    <small class="form-helper">Found on your physical Torrent Power bill copy.</small>
+                  </div>
+                  <div class="form-group">
+                    <label for="torrent-city">City / Area *</label>
+                    <select id="torrent-city" required>
+                      <option value="Ahmedabad" selected>Ahmedabad</option>
+                      <option value="Surat">Surat</option>
+                      <option value="Dahej">Dahej</option>
+                      <option value="Bhiwandi">Bhiwandi</option>
+                      <option value="Mumbra">Mumbra</option>
+                      <option value="Agra">Agra</option>
+                    </select>
+                  </div>
+                  
+                  <button type="button" id="torrent-fetch-btn" class="btn btn-outline btn-block">
+                    <i class="fa-solid fa-magnifying-glass"></i> Fetch Bill Details
+                  </button>
+
+                  <!-- Fetched bill details block (Hidden initially) -->
+                  <div id="torrent-fetched-details" class="fetched-details-block hidden">
+                    <div class="details-row">
+                      <span>Consumer Name:</span>
+                      <strong id="fetched-consumer-name">ALQAMA KHAN</strong>
+                    </div>
+                    <div class="details-row">
+                      <span>Bill Month:</span>
+                      <strong id="fetched-bill-month">July 2026</strong>
+                    </div>
+                    <div class="details-row">
+                      <span>Due Date:</span>
+                      <strong id="fetched-due-date">July 29, 2026</strong>
+                    </div>
+                    
+                    <!-- Branch locator details (Bhiwandi / Mumbra specific) -->
+                    <div id="torrent-branch-locator" class="torrent-branch-locator-box hidden">
+                      <div class="locator-header">
+                        <i class="fa-solid fa-location-dot"></i>
+                        <span>Division Office Location</span>
+                      </div>
+                      <p id="torrent-branch-address">Branch address info...</p>
+                      <a href="#" id="torrent-branch-map-link" target="_blank" class="map-link-btn">
+                        <i class="fa-solid fa-map-location-dot"></i> Locate on Google Maps
+                      </a>
+                    </div>
+
+                    <div class="details-row amount-row">
+                      <span>Net Amount:</span>
+                      <strong id="fetched-amount" class="gradient-text">₹2,450.00</strong>
+                    </div>
+                    <button type="button" id="torrent-pay-btn" class="btn btn-primary btn-block btn-large">
+                      <i class="fa-solid fa-shield-halved"></i> Proceed to Pay
+                    </button>
+                  </div>
+                </form>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Panel 6: Settings -->
+        <div id="settings-panel" class="app-panel">
+          <div class="settings-grid">
+            <!-- Profile settings -->
+            <div class="panel-card">
+              <h3>Profile Settings</h3>
+              <form id="settings-profile-form">
+                <div class="form-group">
+                  <label for="settings-name">Full Name</label>
+                  <input type="text" id="settings-name" required>
+                </div>
+                <div class="form-group">
+                  <label for="settings-email">Email Address</label>
+                  <input type="email" id="settings-email" disabled>
+                  <small class="form-helper">Email address cannot be changed.</small>
+                </div>
+                <button type="submit" class="btn btn-primary">Save Profile</button>
+              </form>
+            </div>
+
+            <!-- Preferences settings -->
+            <div class="panel-card">
+              <h3>Preferences</h3>
+              <form id="settings-prefs-form">
+                <div class="form-group">
+                  <label for="settings-currency">Currency Symbol</label>
+                  <select id="settings-currency">
+                    <option value="INR">₹ (INR)</option>
+                    <option value="USD">$ (USD)</option>
+                    <option value="EUR">€ (EUR)</option>
+                    <option value="GBP">£ (GBP)</option>
+                  </select>
+                </div>
+                <div class="form-group">
+                  <label for="settings-language">Language</label>
+                  <select id="settings-language">
+                    <option value="en">English</option>
+                    <option value="es">Español</option>
+                    <option value="fr">Français</option>
+                  </select>
+                </div>
+                <div class="form-group">
+                  <label for="settings-theme">Theme Mode</label>
+                  <select id="settings-theme">
+                    <option value="dark">Sleek Dark Mode</option>
+                    <option value="light">Crisp Light Mode</option>
+                  </select>
+                </div>
+                <button type="submit" class="btn btn-primary">Update Preferences</button>
+              </form>
+            </div>
+          </div>
+        </div>
+      </main>
+    </div>
+  </section>
+
+  <!-- ==========================================
+       MODALS
+       ========================================== -->
+  <div id="bill-modal" class="modal-overlay hidden">
+    <div class="modal-card glass">
+      <div class="modal-header">
+        <h3 id="modal-title">Add New Bill</h3>
+        <button id="close-modal-btn" class="modal-close"><i class="fa-solid fa-xmark"></i></button>
+      </div>
+      <div class="modal-body">
+        <form id="bill-form">
+          <input type="hidden" id="form-bill-id">
+          
+          <div class="form-group">
+            <label for="form-bill-name">Bill Name *</label>
+            <input type="text" id="form-bill-name" placeholder="e.g. Broadband Connection" required>
+          </div>
+
+          <div class="form-row">
+            <div class="form-group">
+              <label for="form-bill-amount">Amount *</label>
+              <input type="number" id="form-bill-amount" placeholder="0.00" min="1" step="any" required>
+            </div>
+            <div class="form-group">
+              <label for="form-bill-category">Category *</label>
+              <select id="form-bill-category" required>
+                <!-- Dynamic Options -->
+              </select>
+            </div>
+          </div>
+
+          <div class="form-row">
+            <div class="form-group">
+              <label for="form-bill-due-date">Due Date *</label>
+              <input type="date" id="form-bill-due-date" required>
+            </div>
+            <div class="form-group">
+              <label for="form-bill-recurrence">Recurrence *</label>
+              <select id="form-bill-recurrence" required>
+                <option value="One Time">One Time</option>
+                <option value="Weekly">Weekly</option>
+                <option value="Monthly" selected>Monthly</option>
+                <option value="Quarterly">Quarterly</option>
+                <option value="Half Yearly">Half Yearly</option>
+                <option value="Yearly">Yearly</option>
+              </select>
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label for="form-bill-status">Status *</label>
+            <select id="form-bill-status" required>
+              <option value="Unpaid" selected>Unpaid</option>
+              <option value="Paid">Paid</option>
+            </select>
+          </div>
+
+          <div class="form-group">
+            <label for="form-bill-desc">Description</label>
+            <textarea id="form-bill-desc" rows="3" placeholder="Add additional comments or info..."></textarea>
+          </div>
+
+          <div class="modal-footer">
+            <button type="button" id="cancel-bill-btn" class="btn btn-outline">Cancel</button>
+            <button type="submit" class="btn btn-primary">Save Bill</button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+
+  <!-- Payment Gateway Modal -->
+  <div id="payment-modal" class="modal-overlay hidden">
+    <div class="modal-card glass payment-gateway-card">
+      <div class="modal-header">
+        <h3><i class="fa-solid fa-shield-halved text-success"></i> Secure Checkout</h3>
+        <button id="close-payment-modal-btn" class="modal-close"><i class="fa-solid fa-xmark"></i></button>
+      </div>
+      <div class="modal-body">
+        <div class="checkout-summary">
+          <div class="summary-line">
+            <span>Payee:</span>
+            <strong id="checkout-payee">Torrent Power</strong>
+          </div>
+          <div class="summary-line total">
+            <span>Total Payable:</span>
+            <strong id="checkout-amount">₹2,450</strong>
+          </div>
+        </div>
+
+        <div class="payment-methods-tabs">
+          <button class="pm-tab active" id="btn-pm-upi"><i class="fa-solid fa-mobile-screen"></i> UPI</button>
+          <button class="pm-tab" id="btn-pm-card"><i class="fa-solid fa-credit-card"></i> Card</button>
+          <button class="pm-tab" id="btn-pm-netbanking"><i class="fa-solid fa-building-columns"></i> Netbanking</button>
+        </div>
+
+        <div class="pm-content">
+          <!-- UPI Payment Option -->
+          <div id="pm-upi-section" class="pm-section active">
+            <div class="qr-code-area">
+              <div class="qr-placeholder">
+                <i class="fa-solid fa-qrcode"></i>
+              </div>
+              <p>Scan QR code with any UPI app to pay</p>
+              <div class="payment-timer">Expires in <span id="payment-timer-span">02:59</span></div>
+            </div>
+            <div class="divider-text">OR ENTER UPI ID</div>
+            <div class="form-group">
+              <input type="text" id="checkout-upi-id" placeholder="username@upi">
+            </div>
+          </div>
+
+          <!-- Card Payment Option -->
+          <div id="pm-card-section" class="pm-section">
+            <form id="card-payment-form">
+              <div class="form-group">
+                <label>Card Number</label>
+                <input type="text" id="checkout-card-num" placeholder="1234 5678 1234 5678" maxlength="19" required>
+              </div>
+              <div class="form-row">
+                <div class="form-group">
+                  <label>Expiry Date</label>
+                  <input type="text" id="checkout-card-exp" placeholder="MM/YY" maxlength="5" required>
+                </div>
+                <div class="form-group">
+                  <label>CVV</label>
+                  <input type="password" id="checkout-card-cvv" placeholder="•••" maxlength="3" required>
+                </div>
+              </div>
+              <div class="form-group">
+                <label>Cardholder Name</label>
+                <input type="text" id="checkout-card-name" placeholder="John Doe" required>
+              </div>
+            </form>
+          </div>
+
+          <!-- Netbanking Option -->
+          <div id="pm-netbanking-section" class="pm-section">
+            <label>Select Your Bank</label>
+            <div class="banks-grid">
+              <div class="bank-item" data-bank="SBI"><i class="fa-solid fa-landmark"></i> State Bank of India</div>
+              <div class="bank-item" data-bank="HDFC"><i class="fa-solid fa-landmark"></i> HDFC Bank</div>
+              <div class="bank-item" data-bank="ICICI"><i class="fa-solid fa-landmark"></i> ICICI Bank</div>
+              <div class="bank-item" data-bank="AXIS"><i class="fa-solid fa-landmark"></i> Axis Bank</div>
+            </div>
+          </div>
+        </div>
+
+        <button type="button" id="pay-now-btn" class="btn btn-primary btn-block btn-large" style="margin-top: 20px;">
+          Pay Safely Now
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Processing Payment Overlay -->
+  <div id="processing-overlay" class="modal-overlay hidden" style="z-index: 999; background-color: rgba(9, 11, 17, 0.95); position: fixed;">
+    <div class="processing-content" style="text-align: center; color: white;">
+      <div class="spinner-loader" style="margin: 0 auto 20px auto;"></div>
+      <h3 id="processing-status-title">Processing payment securely...</h3>
+      <p id="processing-status-sub" style="color: var(--text-secondary); margin-top: 8px;">Please do not refresh or close the page</p>
+    </div>
+  </div>
+
+  <!-- External JS Script -->
+  <script src="js/app.js"></script>
+</body>
+</html>

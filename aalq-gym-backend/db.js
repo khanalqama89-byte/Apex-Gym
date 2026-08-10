@@ -18,26 +18,45 @@ async function initDB() {
   try {
     const dbName = process.env.DB_NAME || 'apex_gym_db';
 
+    // 1. Connect without database to ensure DB exists
+    try {
+      const initConn = await mysql.createConnection({
+        ...dbConfig,
+        database: undefined
+      });
+      await initConn.query(`CREATE DATABASE IF NOT EXISTS \`${dbName}\`;`);
+      await initConn.end();
+      console.log(`Verified MySQL database: ${dbName}`);
+    } catch (err) {
+      console.warn('Could not auto-create database (might lack permissions or host down):', err.message);
+    }
+
     // 2. Create the final connection pool with the database specified
     pool = mysql.createPool({
       ...dbConfig,
       database: dbName,
       waitForConnections: true,
-      connectionLimit: process.env.VERCEL ? 2 : 10, // Prevent exhausting Aiven free tier limit (10)
+      connectionLimit: process.env.VERCEL ? 2 : 10,
       queueLimit: 0
     });
 
     console.log(`Initialized database pool for: ${dbName}`);
 
-    // Run table creation and seeding asynchronously in the background so we do not block serverless startup
-    createTables()
-      .then(() => seedData())
-      .catch(error => {
-        console.error('Database background initialization failed:', error);
-      });
-
+    // Verify connection & create tables
+    await createTables();
+    await seedData();
   } catch (error) {
-    console.error('Error initializing MySQL database:', error);
+    console.error('Error initializing MySQL database:', error.message);
+    // Keep pool defined so query calls can report connection status
+    if (!pool) {
+      pool = mysql.createPool({
+        ...dbConfig,
+        database: process.env.DB_NAME || 'apex_gym_db',
+        waitForConnections: true,
+        connectionLimit: 2,
+        queueLimit: 0
+      });
+    }
   }
 }
 
