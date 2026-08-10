@@ -74,16 +74,25 @@
 }
 
 .table-select {
-  background: rgba(255, 255, 255, 0.03);
-  border: 1px solid var(--border);
-  color: #fff;
+  background-color: #0f172a;
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  color: #ffffff;
   padding: 0.4rem 0.6rem;
   border-radius: 6px;
   outline: none;
   font-size: 0.85rem;
   transition: var(--transition);
+  cursor: pointer;
 }
 
 .table-select:focus {
   border-color: var(--accent);
+  box-shadow: 0 0 0 2px var(--accent-glow);
 }
+
+.table-select option {
+  background-color: #1e293b;
+  color: #ffffff;
+  padding: 0.5rem;
+}
+

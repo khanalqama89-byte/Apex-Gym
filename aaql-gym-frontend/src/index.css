@@ -171,6 +171,13 @@ p {
   box-shadow: 0 0 0 2px var(--accent-glow);
 }
 
+select option {
+  background-color: #0f1524;
+  color: #f3f4f6;
+  padding: 0.5rem 1rem;
+}
+
+
 /* Badges */
 .badge {
   display: inline-block;
